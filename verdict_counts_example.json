@@ -1,0 +1,14 @@
+{
+  "source": "https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_gr8bp3&limit=9999",
+  "post_id": "t3_gr8bp3",
+  "subreddit": "AmItheAsshole",
+  "total_comments": 1830,
+  "methodology": "Each comment counted at most once per verdict term (literal string match)",
+  "verdict_counts": {
+    "NTA": 1287,
+    "YTA": 9,
+    "ESH": 7,
+    "NAH": 1
+  },
+  "total_verdict_mentions": 1304
+}
