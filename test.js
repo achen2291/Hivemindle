@@ -14,9 +14,8 @@ for (int i = 0; i < 100; i++) {
 
 */
 
-const BASE = "https://fsa-puppy-bowl.herokuapp.com/api/";
-const COHORT = "2605-ALEX";
-const API = BASE + COHORT;
+const BASE = "https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_{post_id}&limit=9999";
+let post_id = "15x0g1k"; // replace with the actual post ID you want to fetch comments for
 
 let players = [];
 let selectedPlayer = null;
