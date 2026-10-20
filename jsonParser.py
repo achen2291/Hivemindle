@@ -27,8 +27,9 @@ body = ""
 url = ""
 gameData = []
 
-#for i in range(0, data["data"]["dist"]):
-for i in range (0, 6):
+# TODO: add try/except for API request, if fails, print error code and post id, then break loop
+# TODO: find a way to loop through all files in a folder and add to gameData dict then write to demofile.json
+for i in range(0, data["data"]["dist"]):
     currentPost = data["data"]["children"][i]["data"]
     id = currentPost["id"]
     if (currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole") or (currentPost["link_flair_text"] == "Everyone Sucks Here") or (currentPost["link_flair_text"] == "No A-holes here"):
