@@ -69,7 +69,7 @@ request = f"https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_
 response = requests.get(request)
 
 '''with open("demojson.json", "w") as f:
-    json.dump(response.json(), f, indent=4)a
+    json.dump(response.json(), f, indent=4)
 '''
 
 # gets comments from demojson, contains comments from first post
