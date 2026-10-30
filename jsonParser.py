@@ -103,11 +103,11 @@ for file in gameFiles:
             # adds game data to list
             gameData.append({f"game-{game_count}": game_dict})
             game_count += 1
+            # sleep for 60 seconds to not overload API upon successful API call
+            sleep(60)
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
-        # sleep for 60 seconds to not overload API
-        sleep(60)
     else:
         continue
     break
