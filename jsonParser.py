@@ -7,7 +7,7 @@ import requests
 # for loop that loops through all posts in topAITA100.json
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
 game_count = 1
-post_num = 1
+post_num = 0
 title = ""
 body = ""
 url = ""
