@@ -6,12 +6,13 @@ import requests
 
 # for loop that loops through all posts in topAITA100.json
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
-count = 0
+count = 143
 title = ""
 body = ""
 url = ""
 gameData = []
-gameFiles = ["topAITA100.json", "topAITA101-200.json", "topAITA201-300.json", "topAITA301-400.json", "topAITA401-500.json"]
+# stopped halfway through 101-200, continue with 200-500 for now
+gameFiles = ["topAITA201-300.json", "topAITA301-400.json", "topAITA401-500.json"]
 
 
 # TODO: add try/except for API request, if fails, print error code and post id, then break loop
@@ -22,7 +23,7 @@ for file in gameFiles:
     for i in range(0, data["data"]["dist"]):
         currentPost = data["data"]["children"][i]["data"]
         id = currentPost["id"]
-        if (currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole") or (currentPost["link_flair_text"] == "Everyone Sucks Here") or (currentPost["link_flair_text"] == "No A-holes here"):
+        if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode":
             # variable declaration
             title = currentPost["title"]
             body = currentPost["selftext"]
@@ -36,11 +37,19 @@ for file in gameFiles:
             # requests comments from arcticshift API for current post (only if flair is valid)
             request = f"https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_{id}&limit=9999"
             response = requests.get(request)
-            if response.status_code != 200:
+            # TODO: while loop instead?
+            # while (response != 200):
+            # get response header ratelimit reset time and add 10 then sleep for that duration?
+            while response.status_code == 422 or response.status_code == 429:
                 print("Error: " + str(response.status_code))
-                print(id)
-                break
+                print(response.headers['x-ratelimit-reset'])
+                print(response.json())
+                print("id: " + str(id))
+                sleep_duration = float(response.headers.get("x-ratelimit-reset")) + 10
+                sleep(sleep_duration)
+                response = requests.get(request)
             print("Response time: " + str(response.elapsed.total_seconds()))
+            print("Post id: " + str(id))
             # loops through all comments, increments verdict counter if string is found in comment (max once per comment)
             for comment in response.json()["data"]:
                 if "NTA" in comment["data"]["body"]:
@@ -101,7 +110,7 @@ for file in gameFiles:
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
-        sleep(5) # sleep for 5 seconds to not overload API
+        sleep(5) # sleep for 20 seconds to not overload API
     else:
         continue
     break
