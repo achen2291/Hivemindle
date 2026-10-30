@@ -40,6 +40,7 @@ for file in gameFiles:
             # TODO: while loop instead?
             # while (response != 200):
             # get response header ratelimit reset time and add 10 then sleep for that duration?
+            # if response is rate limit error (422 or 429) then sleep for rate limit reset duration + 10 seconds
             while response.status_code == 422 or response.status_code == 429:
                 print("Error: " + str(response.status_code))
                 print(response.headers['x-ratelimit-reset'])
@@ -48,6 +49,11 @@ for file in gameFiles:
                 sleep_duration = float(response.headers.get("x-ratelimit-reset")) + 10
                 sleep(sleep_duration)
                 response = requests.get(request)
+            # response got past 422 and 429 so check if response status code is not 200 (success), if so then break and return error code
+            if response.status_code != 200:
+                print("Error: " + str(response.status_code))
+                print(id)
+                break
             print("Response time: " + str(response.elapsed.total_seconds()))
             print("Post id: " + str(id))
             # loops through all comments, increments verdict counter if string is found in comment (max once per comment)
