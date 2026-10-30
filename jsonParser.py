@@ -15,7 +15,7 @@ gameFiles = ["topAITA100.json", "topAITA101-200.json", "topAITA201-300.json", "t
 
 
 # TODO: add try/except for API request, if fails, print error code and post id, then break loop
-# TODO: find a way to loop through all files in a folder and add to gameData dict then write to demofile.json
+# DONE: find a way to loop through all files in a folder and add to gameData dict then write to demofile.json
 for file in gameFiles:
     f = open(file, 'r')
     data = json.load(f)
@@ -101,7 +101,7 @@ for file in gameFiles:
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
-        sleep(5) # sleep for 2 seconds to not overload API
+        sleep(5) # sleep for 5 seconds to not overload API
     else:
         continue
     break
