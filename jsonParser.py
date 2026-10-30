@@ -6,7 +6,8 @@ import requests
 
 # for loop that loops through all posts in topAITA100.json
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
-count = 0
+game_count = 1
+post_num = 1
 title = ""
 body = ""
 url = ""
@@ -21,6 +22,9 @@ for file in gameFiles:
     f = open(file, 'r')
     data = json.load(f)
     for i in range(0, data["data"]["dist"]):
+        post_num += 1
+        print("===============================")
+        print ("Post number: " + str(post_num))
         currentPost = data["data"]["children"][i]["data"]
         id = currentPost["id"]
         if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode":
@@ -97,8 +101,8 @@ for file in gameFiles:
                 "margin_of_error": margin_of_error,
             }
             # adds game data to list
-            gameData.append({f"game-{count + 1}": game_dict})
-            count += 1
+            gameData.append({f"game-{game_count}": game_dict})
+            game_count += 1
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
@@ -113,7 +117,7 @@ demofile = open("demofile.json", "w")
 json.dump(gameData, demofile, indent=4)
 # close json file
 demofile.close()
-print("Total number of games: " + str(count))
+print("Total number of games: " + str(game_count))
 
 # DONE: assign currentPost values to variables instead, construct json from variables in following format
 # DONE: go through for loop, if flair is valid, pull title, body, url from currentPost
