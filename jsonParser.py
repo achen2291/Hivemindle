@@ -37,25 +37,11 @@ for file in gameFiles:
             # requests comments from arcticshift API for current post (only if flair is valid)
             request = f"https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_{id}&limit=9999"
             response = requests.get(request)
-            # TODO: while loop instead?
-            # while (response != 200):
-            # get response header ratelimit reset time and add 10 then sleep for that duration?
-            # if response is rate limit error (422 or 429) then sleep for rate limit reset duration + 10 seconds
-            while response.status_code == 422 or response.status_code == 429:
-                print("Error: " + str(response.status_code))
-                print(response.headers['x-ratelimit-reset'])
-                print(response.json())
-                print("id: " + str(id))
-                sleep_duration = float(response.headers.get("x-ratelimit-reset")) + 10
-                sleep(sleep_duration)
-                response = requests.get(request)
-            # response got past 422 and 429 so check if response status code is not 200 (success), if so then break and return error code
             if response.status_code != 200:
                 print("Error: " + str(response.status_code))
                 print(id)
                 break
             print("Response time: " + str(response.elapsed.total_seconds()))
-            print("Post id: " + str(id))
             # loops through all comments, increments verdict counter if string is found in comment (max once per comment)
             for comment in response.json()["data"]:
                 if "NTA" in comment["data"]["body"]:
@@ -116,8 +102,8 @@ for file in gameFiles:
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
-        # sleep for 20 seconds to not overload API
-        # sleep(5) 
+        # sleep for 60 seconds to not overload API
+        sleep(60)
     else:
         continue
     break
