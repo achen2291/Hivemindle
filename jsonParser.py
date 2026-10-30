@@ -6,13 +6,13 @@ import requests
 
 # for loop that loops through all posts in topAITA100.json
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
-count = 143
+count = 0
 title = ""
 body = ""
 url = ""
 gameData = []
 # stopped halfway through 101-200, continue with 200-500 for now
-gameFiles = ["topAITA201-300.json", "topAITA301-400.json", "topAITA401-500.json"]
+gameFiles = ["topAITA100.json", "topAITA101-200.json", "topAITA201-300.json", "topAITA301-400.json", "topAITA401-500.json"]
 
 
 # TODO: add try/except for API request, if fails, print error code and post id, then break loop
@@ -116,7 +116,8 @@ for file in gameFiles:
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
-        sleep(5) # sleep for 20 seconds to not overload API
+        # sleep for 20 seconds to not overload API
+        # sleep(5) 
     else:
         continue
     break
