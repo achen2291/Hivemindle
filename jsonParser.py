@@ -6,7 +6,9 @@ import requests
 
 # for loop that loops through all posts in topAITA100.json
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
-game_count = 1
+
+# change game count to +1 the previous one
+game_count = 417
 post_num = 0
 title = ""
 body = ""
@@ -14,6 +16,8 @@ url = ""
 gameData = []
 # stopped halfway through 101-200, continue with 200-500 for now
 gameFiles = ["topAITA100.json", "topAITA101-200.json", "topAITA201-300.json", "topAITA301-400.json", "topAITA401-500.json"]
+
+headers = {'user-agent': 'achen2291'}
 
 
 # TODO: add try/except for API request, if fails, print error code and post id, then break loop
@@ -23,10 +27,16 @@ for file in gameFiles:
     data = json.load(f)
     for i in range(0, data["data"]["dist"]):
         post_num += 1
-        print("===============================")
+        print ("===============================")
         print ("Post number: " + str(post_num))
         currentPost = data["data"]["children"][i]["data"]
         id = currentPost["id"]
+        # change post num to value that it stopped at to skip all previous posts leading up to the one it was stuck on
+        # post num 183 is insane amount of comments (12k+)
+        # post num 492 lost for unknown reason
+        if (post_num < 493):
+            continue
+        print ("Id: " + str(id))
         if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode":
             # variable declaration
             title = currentPost["title"]
@@ -40,10 +50,15 @@ for file in gameFiles:
             margin_of_error = 0
             # requests comments from arcticshift API for current post (only if flair is valid)
             request = f"https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_{id}&limit=9999"
-            response = requests.get(request)
+            response = requests.get(request, headers=headers)
             if response.status_code != 200:
                 print("Error: " + str(response.status_code))
                 print(id)
+                print(response.headers)
+                print(response.json())
+                for i in range (0, int(response.headers['x-ratelimit-reset'])):
+                    print(i)
+                    sleep(1)
                 break
             print("Response time: " + str(response.elapsed.total_seconds()))
             # loops through all comments, increments verdict counter if string is found in comment (max once per comment)
@@ -104,7 +119,7 @@ for file in gameFiles:
             gameData.append({f"game-{game_count}": game_dict})
             game_count += 1
             # sleep for 60 seconds to not overload API upon successful API call
-            sleep(60)
+            sleep(120)
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
