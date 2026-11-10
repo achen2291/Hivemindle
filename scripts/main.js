@@ -169,10 +169,10 @@ function buttonEventListener() {
 
 // Input validation to make sure it's a valid number and truncated to 2 digits
 function handleInput() {
-  const guessNTA = Number(inputNTA.value).toFixed(2);
-  const guessYTA = Number(inputYTA.value).toFixed(2);
-  const guessESH = Number(inputESH.value).toFixed(2);
-  const guessNAH = Number(inputNAH.value).toFixed(2);
+  const guessNTA = parseInt(inputNTA.value);
+  const guessYTA = parseInt(inputYTA.value);
+  const guessESH = parseInt(inputESH.value);
+  const guessNAH = parseInt(inputNAH.value);
 
   if (
     isNaN(guessNTA) ||
@@ -194,4 +194,31 @@ function handleInput() {
   inputYTA.value = "";
   inputESH.value = "";
   inputNAH.value = "";
+}
+
+function copyStats() {
+  let output = `Hivemindle #${gameNumber}`;
+  if (!gameState.hasWon) {
+    output += `X/${maxGameLength}\n`;
+  } else {
+    output += `${gameState.guesses.length}/${maxGameLength}\n`;
+  }
+
+  gameState.guesses.forEach((guess) => {
+    /* guess object should be 
+    {
+      NTAGuess, closeness, direction
+      YTAGuess, closeness, direction
+      ESHGuess, closeness, direction
+      NAHGuess, closeness, direction
+    }
+
+    After that, for each guess in gamestate guesses list, 
+    if guess.NTAGuess is up, output upArrow for NTAGuess
+    if guess.NTAGuess is down, output downArrow for NTAGuess
+    repeat for YTA, ESH, NAH
+
+    each guess needs closeness check also
+    */
+  });
 }
