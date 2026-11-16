@@ -8,16 +8,16 @@ import requests
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
 
 # change game count to +1 the previous one
-game_count = 417
+game_count = 429
 post_num = 0
 title = ""
 body = ""
 url = ""
 gameData = []
-# stopped halfway through 101-200, continue with 200-500 for now
-gameFiles = ["topAITA100.json", "topAITA101-200.json", "topAITA201-300.json", "topAITA301-400.json", "topAITA401-500.json"]
+# Skip first 2 game because they are already in games.json
+gameFiles = ["top100year.json", "top200year.json", "top300year.json", "top400year.json", "top500year.json"]
 
-headers = {'user-agent': 'achen2291'}
+# headers = {'user-agent': 'achen2291'}
 
 
 # TODO: add try/except for API request, if fails, print error code and post id, then break loop
@@ -34,7 +34,7 @@ for file in gameFiles:
         # change post num to value that it stopped at to skip all previous posts leading up to the one it was stuck on
         # post num 183 is insane amount of comments (12k+)
         # post num 492 lost for unknown reason
-        if (post_num < 493):
+        if (post_num < 8):
             continue
         print ("Id: " + str(id))
         if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode":
@@ -50,7 +50,7 @@ for file in gameFiles:
             margin_of_error = 0
             # requests comments from arcticshift API for current post (only if flair is valid)
             request = f"https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_{id}&limit=9999"
-            response = requests.get(request, headers=headers)
+            response = requests.get(request)
             if response.status_code != 200:
                 print("Error: " + str(response.status_code))
                 print(id)
@@ -118,8 +118,8 @@ for file in gameFiles:
             # adds game data to list
             gameData.append({f"game-{game_count}": game_dict})
             game_count += 1
-            # sleep for 60 seconds to not overload API upon successful API call
-            sleep(120)
+            # sleep for 5 seconds to not overload API upon successful API call
+            sleep(5)
             
         else:
             print("invalid flair: " + currentPost["link_flair_text"])
