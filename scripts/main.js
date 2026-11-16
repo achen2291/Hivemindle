@@ -246,6 +246,7 @@ function copyStats() {
     }
 
     // Repeat for YTA, ESH, NAH
+    // Decide on a format for output
 
     output += `n`;
     /* guess object should be 
