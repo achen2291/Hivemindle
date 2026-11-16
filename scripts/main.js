@@ -160,7 +160,14 @@ function updateGuessStat() {
 }
 
 function convertToShareButton() {
-  // TODO
+  const containerElement = document.getElementById("input-container");
+  const shareButtonElement = document.createElement("button");
+  shareButtonElement.setAttribute("id", "share-button");
+  containerElement.innerHTML = "";
+  shareButtonElement.innerHTML = `Share
+  <img src="./assets/share-icon.svg" alt="Share Icon" class="share-icon" />`;
+  shareButtonElement.addEventListener("click", copyStats);
+  containerElement.appendChild(shareButtonElement);
 }
 
 function inputEventListener(event) {
@@ -211,6 +218,36 @@ function copyStats() {
   }
 
   gameState.guesses.forEach((guess) => {
+    switch (guess.directionNTA) {
+      case "&uarr;":
+        output += `⬆️`;
+        break;
+      case "&darr;":
+        output += `⬇️`;
+        break;
+      case "&check;":
+        output += `✅`;
+        break;
+      default:
+        output += `How did you do that`;
+        break;
+    }
+
+    switch (guess.closenessNTA) {
+      case "guess-close":
+        output += `🟨`;
+        break;
+      case "guess-far":
+        output += `🟥`;
+        break;
+      default:
+        output += `How did you do that for closeness`;
+        break;
+    }
+
+    // Repeat for YTA, ESH, NAH
+
+    output += `n`;
     /* guess object should be 
     {
       NTAGuess, closeness, direction
@@ -241,7 +278,7 @@ function addEventListeners() {
   });
 }
 
-function removeEventListener() {
+function removeEventListeners() {
   buttonInput.setAttribute("disabled", "");
   buttonInput.classList.remove("active");
   input.setAttribute("disabled", "");
@@ -372,3 +409,25 @@ function checkGuess(guessNTA, guessYTA, guessESH, guessNAH) {
 function calculateDiff(guess, answer) {
   return guess - answer;
 }
+
+function gameWon() {
+  userStats.numWins++;
+  userStats.currentStreak++;
+  userStats.winsInNumGuesses[gameState.guesses.length - 1]++;
+  if (userStats.currentStreak > userStats.maxStreak) {
+    userStats.maxStreak = userStats.currentStreak;
+  }
+  // gameState.hasWon = true;
+  localStorage.setItem("state", JSON.stringify(gameState)); //Is this necessary? 
+  localStorage.setItem("stats", JSON.stringify(userStats));
+  removeEventListeners();
+  convertToShareButton();
+}
+
+function gameLost() {
+  userStats.currentStreak = 0;
+  localStorage.setItem("stats", JSON.stringify(userStats));
+  removeEventListeners();
+  convertToShareButton();
+}
+
