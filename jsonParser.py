@@ -37,7 +37,7 @@ for file in gameFiles:
         if (post_num < 8):
             continue
         print ("Id: " + str(id))
-        if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode":
+        if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode" or currentPost["link_flair_text"] == "Everyone Sucks POO Mode" or currentPost["link_flair_text"] == "No A-holes here POO Mode":
             # variable declaration
             title = currentPost["title"]
             body = currentPost["selftext"]
