@@ -141,6 +141,8 @@ function displayGame() {
 
 function updateGameBoard() {
   updateGuessStat();
+
+  gameState.guesses.forEach((guess, index) => displayGuess(guess, index+1));
 }
 
 function updateGuessStat() {
@@ -226,7 +228,7 @@ function copyStats() {
         output += `⬇️`;
         break;
       case "&check;":
-        output += `✅`;
+        output += `✅ `;
         break;
       default:
         output += `How did you do that`;
@@ -235,20 +237,102 @@ function copyStats() {
 
     switch (guess.closenessNTA) {
       case "guess-close":
-        output += `🟨`;
+        output += `🟨 `;
         break;
       case "guess-far":
-        output += `🟥`;
+        output += `🟥 `;
         break;
       default:
         output += `How did you do that for closeness`;
         break;
     }
 
-    // Repeat for YTA, ESH, NAH
-    // Decide on a format for output
+    switch (guess.directionYTA) {
+      case "&uarr;":
+        output += `⬆️`;
+        break;
+      case "&darr;":
+        output += `⬇️`;
+        break;
+      case "&check;":
+        output += `✅ `;
+        break;
+      default:
+        output += `How did you do that`;
+        break;
+    }
 
-    output += `n`;
+    switch (guess.closenessYTA) {
+      case "guess-close":
+        output += `🟨 `;
+        break;
+      case "guess-far":
+        output += `🟥 `;
+        break;
+      default:
+        output += `How did you do that for closeness`;
+        break;
+    }
+
+    switch (guess.directionESH) {
+      case "&uarr;":
+        output += `⬆️`;
+        break;
+      case "&darr;":
+        output += `⬇️`;
+        break;
+      case "&check;":
+        output += `✅ `;
+        break;
+      default:
+        output += `How did you do that`;
+        break;
+    }
+
+    switch (guess.closenessESH) {
+      case "guess-close":
+        output += `🟨 `;
+        break;
+      case "guess-far":
+        output += `🟥 `;
+        break;
+      default:
+        output += `How did you do that for closeness`;
+        break;
+    }
+
+    switch (guess.directionNAH) {
+      case "&uarr;":
+        output += `⬆️`;
+        break;
+      case "&darr;":
+        output += `⬇️`;
+        break;
+      case "&check;":
+        output += `✅ `;
+        break;
+      default:
+        output += `How did you do that`;
+        break;
+    }
+
+    switch (guess.closenessNAH) {
+      case "guess-close":
+        output += `🟨 `;
+        break;
+      case "guess-far":
+        output += `🟥 `;
+        break;
+      default:
+        output += `How did you do that for closeness`;
+        break;
+    }
+
+    // Decide on a format for output
+    // Current format is arrow + closeness for each guess
+    // EX: ⬆️🟨 ✅ ⬇️🟥 ⬆️🟨
+
+    output += `\n`;
     /* guess object should be 
     {
       NTAGuess, closeness, direction
@@ -265,6 +349,40 @@ function copyStats() {
     each guess needs closeness check also
     */
   });
+
+  function isMobile() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  if (isMobile()) {
+    if (navigator.canShare) {
+      navigator.share({
+        title: "Hivemindle",
+        text: output,
+        url: "https://hivemindle.com",
+      }).catch((error) => console.log("Share failed: ", error));
+    }
+  }
+  else {
+    output += `https://hivemindle.com`;
+    navigator.clipboard.writeText(output);
+    displayToast();
+  }
+
+  function displayToast() {
+    clearTimeout(toastTimeout);
+    const toastElement = document.getElementById("share-toast");
+    toastElement.classList.remove("hide");
+    toastElement.classList.add("animate__flipInX");
+
+    toastTimeout = setTimeout(() => {
+      toastElement.classList.remove("animate__flipInX");
+      toastElement.classList.add("animate__flipOutX");
+      setTimeout(() => {
+        toastElement.classList.remove("animate__flipOutX");
+        toastElement.classList.add("hide");
+      }, 1000);
+    }, 3000);
+  }
 }
 
 function addEventListeners() {
@@ -399,6 +517,7 @@ function checkGuess(guessNTA, guessYTA, guessESH, guessNAH) {
   // TODO: Implement displayGuess function
   displayGuess(guessObj);
   // TODO: implement gameWon and gameLost functions
+  // DONE
   if (gameState.hasWon) {
     gameWon();
   } else if (gameState.guesses.length === maxGameLength) {
@@ -432,3 +551,84 @@ function gameLost() {
   convertToShareButton();
 }
 
+function displayGuess(guess, index=gameState.guesses.length) {
+  // Create containers for each type of guess
+  const guessContainerNTA = document.getElementById(index + "NTA");
+  const guessContainerYTA = document.getElementById(index + "YTA");
+  const guessContainerESH = document.getElementById(index + "ESH");
+  const guessContainerNAH = document.getElementById(index + "NAH");
+
+  const guessValueContainerNTA = document.createElement("div");
+  const guessValueContainerYTA = document.createElement("div");
+  const guessValueContainerESH = document.createElement("div");
+  const guessValueContainerNAH = document.createElement("div");
+
+  const infoContainerNTA = document.createElement("div");
+  const infoContainerYTA = document.createElement("div");
+  const infoContainerESH = document.createElement("div");
+  const infoContainerNAH = document.createElement("div");
+  // Add classes to containers to animate and add guess to html
+  guessValueContainerNTA.classList.add("guess-value-container", "animate__flipInX");
+  guessValueContainerYTA.classList.add("guess-value-container", "animate__flipInX");
+  guessValueContainerESH.classList.add("guess-value-container", "animate__flipInX");
+  guessValueContainerNAH.classList.add("guess-value-container", "animate__flipInX");
+
+  infoContainerNTA.classList.add("guess-direction-container", "animate__flipInX");
+  infoContainerYTA.classList.add("guess-direction-container", "animate__flipInX");
+  infoContainerESH.classList.add("guess-direction-container", "animate__flipInX");
+  infoContainerNAH.classList.add("guess-direction-container", "animate__flipInX");
+
+  guessValueContainerNTA.innerHTML = `$${guess.guessNTA}`;
+  guessValueContainerYTA.innerHTML = `$${guess.guessYTA}`;
+  guessValueContainerESH.innerHTML = `$${guess.guessESH}`;
+  guessValueContainerNAH.innerHTML = `$${guess.guessNAH}`;
+  
+  infoContainerNTA.classList.add(guess.closenessNTA);
+  infoContainerYTA.classList.add(guess.closenessYTA);
+  infoContainerESH.classList.add(guess.closenessESH);
+  infoContainerNAH.classList.add(guess.closenessNAH);
+
+  infoContainerNTA.innerHTML = guess.directionNTA;
+  infoContainerYTA.innerHTML = guess.directionYTA;
+  infoContainerESH.innerHTML = guess.directionESH;
+  infoContainerNAH.innerHTML = guess.directionNAH;
+
+  guessContainerNTA.classList.add("animate__flipInX");
+  guessContainerYTA.classList.add("animate__flipInX");
+  guessContainerESH.classList.add("animate__flipInX");
+  guessContainerNAH.classList.add("animate__flipInX");
+
+  setTimeout(() => {
+    guessContainerNTA.classList.add("transparent-background");
+    guessContainerYTA.classList.add("transparent-background");
+    guessContainerESH.classList.add("transparent-background");
+    guessContainerNAH.classList.add("transparent-background");
+
+    guessContainerNTA.appendChild(guessValueContainerNTA);
+    guessContainerYTA.appendChild(guessValueContainerYTA);
+    guessContainerESH.appendChild(guessValueContainerESH);
+    guessContainerNAH.appendChild(guessValueContainerNAH);
+
+    guessContainerNTA.appendChild(infoContainerNTA);
+    guessContainerYTA.appendChild(infoContainerYTA);
+    guessContainerESH.appendChild(infoContainerESH);
+    guessContainerNAH.appendChild(infoContainerNAH);
+
+  }, 500);
+
+  updateGuessStat();
+}
+
+function shakeBox() {
+  clearTimeout(shakeTimeout);
+  const infoCard = document.getElementById("info-card");
+  if (infoCard.classList.contains("animate__headShake")) {
+    infoCard.classList.remove("animate__headShake");
+  }
+  shakeTimeout = setTimeout(() => infoCard.classList.add("animate__headShake"), 100);
+}
+
+function getGameNumber() {
+  // TODO: Implement logic to get game number based on diff from today and starting date
+  return 1;
+}

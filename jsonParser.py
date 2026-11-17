@@ -8,8 +8,8 @@ import requests
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
 
 # change game count to +1 the previous one
-game_count = 616
-curr_post = 207
+game_count = 641
+curr_post = 234
 post_num = 0
 title = ""
 body = ""
@@ -35,6 +35,8 @@ for file in gameFiles:
         # change post num to value that it stopped at to skip all previous posts leading up to the one it was stuck on
         # post num 183 is insane amount of comments (12k+)
         # post num 492 lost for unknown reason
+        # post num 233 in past year has 8k comments
+        # make new script to paginate through comments for posts with large amount of comments individually
         if (post_num < curr_post):
             continue
         print ("Id: " + str(id))
