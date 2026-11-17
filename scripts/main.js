@@ -34,8 +34,9 @@ const inputNAH = document.getElementById("NAH-guess-input");
 const buttonInput = document.getElementById("guess-button");
 
 const infoButton = document.getElementById("info-button");
+// TODO: Implement switchState function, switches between game view and info view.
 infoButton.addEventListener("click", switchState);
-
+// TODO: Implement switchState function, switches between game view and stats view.
 const statsButton = document.getElementById("stats-button");
 statsButton.addEventListener("click", switchState);
 
