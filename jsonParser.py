@@ -8,7 +8,8 @@ import requests
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
 
 # change game count to +1 the previous one
-game_count = 429
+game_count = 570
+curr_post = 156
 post_num = 0
 title = ""
 body = ""
@@ -34,7 +35,7 @@ for file in gameFiles:
         # change post num to value that it stopped at to skip all previous posts leading up to the one it was stuck on
         # post num 183 is insane amount of comments (12k+)
         # post num 492 lost for unknown reason
-        if (post_num < 8):
+        if (post_num < curr_post):
             continue
         print ("Id: " + str(id))
         if currentPost["link_flair_text"] == "Asshole" or currentPost["link_flair_text"] == "Not the A-hole" or currentPost["link_flair_text"] == "Everyone Sucks" or currentPost["link_flair_text"] == "No A-holes here" or currentPost["link_flair_text"] == "Not the A-hole POO Mode" or currentPost["link_flair_text"] == "Asshole POO Mode" or currentPost["link_flair_text"] == "Everyone Sucks POO Mode" or currentPost["link_flair_text"] == "No A-holes here POO Mode":
@@ -122,7 +123,7 @@ for file in gameFiles:
             sleep(90)
             
         else:
-            print("invalid flair: " + currentPost["link_flair_text"])
+            print("invalid flair: " + str(currentPost["link_flair_text"]))
     else:
         continue
     break
