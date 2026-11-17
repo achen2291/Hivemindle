@@ -8,8 +8,8 @@ import requests
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
 
 # change game count to +1 the previous one
-game_count = 570
-curr_post = 156
+game_count = 616
+curr_post = 207
 post_num = 0
 title = ""
 body = ""
