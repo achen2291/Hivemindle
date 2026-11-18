@@ -8,8 +8,8 @@ import requests
 # if post is flaired with proper flair, writes title, body, id, and url to demofile
 
 # change game count to +1 the previous one
-game_count = 641
-curr_post = 234
+game_count = 735
+curr_post = 332
 # Lost post number 183, 492, and 233 (past year)
 post_num = 0
 title = ""
@@ -56,6 +56,11 @@ for file in gameFiles:
             request = f"https://arctic-shift.photon-reddit.com/api/comments/tree?link_id=t3_{id}&limit=9999"
             response = requests.get(request)
             if response.status_code != 200:
+                demofile = open("demofile.json", "w")
+                json.dump(gameData, demofile, indent=4)
+                # close json file
+                demofile.close()
+                print("Total number of games: " + str(game_count))
                 print("Error: " + str(response.status_code))
                 print(id)
                 print(response.headers)
