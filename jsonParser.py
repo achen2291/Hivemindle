@@ -10,6 +10,7 @@ import requests
 # change game count to +1 the previous one
 game_count = 641
 curr_post = 234
+# Lost post number 183, 492, and 233 (past year)
 post_num = 0
 title = ""
 body = ""
