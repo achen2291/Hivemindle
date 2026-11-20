@@ -201,7 +201,19 @@ function handleInput() {
   }
 
   function displayWarning() {
-    // TODO
+    clearTimeout(warningTimeout);
+    const warningElement = document.getElementById("warning-toast");
+    warningElement.classList.remove("hide");
+    warningElement.classList.add("animate__flipInX");
+
+    warningTimeout = setTimeout(() => {
+      warningElement.classList.remove("animate__flipInX");
+      warningElement.classList.add("animate__flipOutX");
+      setTimeout(() => {
+        warningElement.classList.remove("animate__flipOutX");
+        warningElement.classList.add("hide");
+      }, 1000);
+    }, 2000);
   }
 
   checkGuess(guessNTA, guessYTA, guessESH, guessNAH);
