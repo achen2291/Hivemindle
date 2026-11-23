@@ -645,3 +645,76 @@ function getGameNumber() {
   // TODO: Implement logic to get game number based on diff from today and starting date
   return 1;
 }
+
+function switchState(event) {
+  const overlayButtonClicked = event.currentTarget.dataset.overlay;
+  const overlayElement = document.getElementById(overlayButtonClicked);
+  const title = document.getElementById("title");
+
+  if (title.classList.contains("info-title")) {
+    title.classList.remove("info-title");
+  }
+
+  if (overlayElement.style.display === "flex") {
+    title.innerHTML = `HIVEMINDLE`;
+    overlayElement.style.display = "none";
+    return;
+  }
+
+  if (overlayButtonClicked === "info-overlay") {
+    document.getElementById("stats-overlay").style.display = "none";
+    renderInfo();
+  }
+  else {
+    document.getElementById("info-overlay").style.display = "none";
+    renderStats();
+  }
+
+  function renderInfo() {
+    title.innerHTML = `HOW TO PLAY`;
+    overlayElement.style.display = "flex";
+    if (!title.classList.contains("info-title")) {
+      title.classList.add("info-title");
+    }
+  }
+
+  function renderStats() {
+    title.innerHTML = `GAME STATS`;
+    overlayElement.style.display = "flex";
+    renderGameStats();
+    graphDistribution();
+
+    function renderGameStats() {
+      const numGamesElement = document.getElementById("num-games");
+      numGamesElement.innerHTML = `${userStats.numGames}`;
+
+      const winPercentageElement = document.getElementById("win-percentage");
+      if (userStats.numGames === 0) {
+        winPercentageElement.innerHTML = `0`;
+      }
+      else {
+        winPercentageElement.innerHTML = `${Math.round((userStats.numWins) / (userStats.numGames)) * 100}`;
+      }
+
+      const currentStreakElement = document.getElementById("current-streak");
+      currentStreakElement.innerHTML = `${userStats.currentStreak}`;
+
+      const maxStreakElement = document.getElementById("max-streak");
+      maxStreakElement.innerHTML = `${userStats.maxStreak}`;
+    }
+
+    function graphDistribution() {
+      userStats.winsInNumGuesses.forEach((numGuesses, index) => {
+        const graphBarElement = document.getElementById(`guess-${index + 1}`);
+        if (userStats.numWins === 0) {
+          graphBarElement.style.width = `5%`;
+        }
+        else {
+          graphBarElement.style.width = `${Math.floor((numGuesses / userStats.numWins) * 95.0) + 5}%`;
+        }
+        graphBarElement.innerHTML = `${numGuesses}`;
+      });
+    }
+  }
+
+}
