@@ -1,0 +1,11 @@
+.center {
+    text-align: center;
+}
+
+.hide {
+    display: none;
+}
+
+#text-container {
+    white-space: pre-wrap;
+}

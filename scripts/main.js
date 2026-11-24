@@ -76,22 +76,22 @@ function fetchGameData(gameNumber) {
     .then((response) => response.json())
     .then((json) => {
       // Current game's post's title
-      gameTitle = json[`game-${gameNumber}`].title;
+      gameTitle = json[`${gameNumber-1}`][`game-${gameNumber}`].title;
       // Current game's post's body text
-      gameBody = json[`game-${gameNumber}`].body;
+      gameBody = json[`${gameNumber-1}`][`game-${gameNumber}`].body;
       // Current game's post's NTA, YTA, ESH, NAH percentages
-      gameNTA = json[`game-${gameNumber}`].NTA;
-      gameYTA = json[`game-${gameNumber}`].YTA;
-      gameESH = json[`game-${gameNumber}`].ESH;
-      gameNAH = json[`game-${gameNumber}`].NAH;
+      gameNTA = json[`${gameNumber-1}`][`game-${gameNumber}`].NTA;
+      gameYTA = json[`${gameNumber-1}`][`game-${gameNumber}`].YTA;
+      gameESH = json[`${gameNumber-1}`][`game-${gameNumber}`].ESH;
+      gameNAH = json[`${gameNumber-1}`][`game-${gameNumber}`].NAH;
       // Current game's post's NTA, YTA, ESH, NAH vote counts
-      gameNTACount = json[`game-${gameNumber}`].NTA_Count;
-      gameYTACount = json[`game-${gameNumber}`].YTA_Count;
-      gameESHCount = json[`game-${gameNumber}`].ESH_Count;
-      gameNAHCount = json[`game-${gameNumber}`].NAH_Count;
+      gameNTACount = json[`${gameNumber-1}`][`game-${gameNumber}`].NTA_Count;
+      gameYTACount = json[`${gameNumber-1}`][`game-${gameNumber}`].YTA_Count;
+      gameESHCount = json[`${gameNumber-1}`][`game-${gameNumber}`].ESH_Count;
+      gameNAHCount = json[`${gameNumber-1}`][`game-${gameNumber}`].NAH_Count;
       // Current game's post's verdict sum and margin of error
-      gameVerdictSum = json[`game-${gameNumber}`].verdict_sum;
-      gameMarginOfError = json[`game-${gameNumber}`].margin_of_error;
+      gameVerdictSum = json[`${gameNumber-1}`][`game-${gameNumber}`].verdict_sum;
+      gameMarginOfError = json[`${gameNumber-1}`][`game-${gameNumber}`].margin_of_error;
 
       initializeGame();
     });
@@ -137,7 +137,7 @@ function displayGame() {
 
   // Select game title element and update html to display post title
   const titleContainer = document.getElementById("title-container");
-  titleContainer.innerHTML = `<center>${gameTitle}</center>`;
+  titleContainer.innerHTML = `<div class="center">${gameTitle}</div>`;
 }
 
 function updateGameBoard() {

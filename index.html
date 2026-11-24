@@ -1,38 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hivemindle</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hivemindle</title>
+    <!-- Google tag (gtag.js) 
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-J8Q97VV1GQ"
+      ></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        gtag("js", new Date());
 
-  <!-- Google tag (gtag.js) 
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-J8Q97VV1GQ"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
+        gtag("config", "G-J8Q97VV1GQ");
+      </script>
+      -->
 
-      gtag("config", "G-J8Q97VV1GQ");
-    </script>
-    -->
+    <!-- favicon configs -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png" />
+    <link rel="manifest" href="/public/site.webmanifest" />
+    <link rel="mask-icon" href="/public/safari-pinned-tab.svg" color="#5bbad5" />
+    <link rel="shortcut-icon" href="/public/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#dcdcdc" />
+    <meta name="msapplication-config" content="/public/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
 
-  <!-- favicon configs -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png" />
-  <link rel="manifest" href="/public/site.webmanifest" />
-  <link rel="mask-icon" href="/public/safari-pinned-tab.svg" color="#5bbad5" />
-  <link rel="shortcut-icon" href="/public/favicon.ico" />
-  <meta name="msapplication-TileColor" content="#dcdcdc" />
-  <meta name="msapplication-config" content="/public/browserconfig.xml" />
+    <link rel="stylesheet" href="styles/game.css" />
+    <link rel="stylesheet" href="styles/overlay.css" />
+    <link rel="stylesheet" href="styles/global.css" />
 
-  
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap" />
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" defer></script>
+    <script src="scripts/main.js" defer></script>
+  </head>
+  <body>
+    <div id="main-page">
+      <header id="site-header">
+        <div id="header-container">
+          <button id="info-button" data-overlay="info-overlay" type="button">
+            ?
+          </button>
+          <h1 id="title" class="title hivemindle">
+            <div class="center">Hivemindle</div>
+          </h1>
+          <button id="stats-button" data-overlay="stats-overlay" type="button">
+            <img src="/assets/stats-logo.png" alt="Stats" style="height: 100%; width: 100%"/>
+          </button>
+        </div>
+      </header>
+      <main id="game-container">
+        <div id="share-toast" class="animate__animated hide">
+          <div class="center">Results copied to clipboard</div>
+        </div>
+        <div id="info-card" class="animate__animated">
+          <div id="title-container"></div>
+          <div id="text-container"></div>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>
