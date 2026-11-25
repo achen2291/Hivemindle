@@ -81,7 +81,6 @@ function fetchGameData(gameNumber) {
     .then((response) => response.json())
     .then((json) => {
       // Current game's post's title
-      console.log(json[`${gameNumber - 1}`][`game-${gameNumber}`]);
       gameTitle = json[`${gameNumber - 1}`][`game-${gameNumber}`].title;
       // Current game's post's body text
       gameBody = json[`${gameNumber - 1}`][`game-${gameNumber}`].body;
@@ -193,18 +192,24 @@ function buttonEventListener() {
 
 // Input validation to make sure it's a valid number and truncated to 2 digits
 function handleInput() {
-  const guessNTA = parseInt(inputNTA.value);
+  const guessNTA = parseInt(inputNTA.value, 10);
   const guessYTA = parseInt(inputYTA.value);
   const guessESH = parseInt(inputESH.value);
   const guessNAH = parseInt(inputNAH.value);
-
+  console.log("NTA value: " + guessNTA);
+  console.log("YTA value: " + guessYTA);
   if (
     isNaN(guessNTA) ||
     isNaN(guessYTA) ||
     isNaN(guessESH) ||
     isNaN(guessNAH)
   ) {
+    console.log("here");
     displayWarning();
+    console.log("NTA: " + isNaN(guessNTA));
+    console.log("YTA: " + isNaN(guessYTA));
+    console.log("ESH: " + isNaN(guessESH));
+    console.log("NAH: " + isNaN(guessNAH));
     return;
   }
 
@@ -410,24 +415,61 @@ function copyStats() {
 }
 
 function addEventListeners() {
-  input.addEventListener("keydown", inputEventListener);
+  inputNTA.addEventListener("keydown", inputEventListener);
+  inputYTA.addEventListener("keydown", inputEventListener);
+  inputESH.addEventListener("keydown", inputEventListener);
+  inputNAH.addEventListener("keydown", inputEventListener);
   buttonInput.addEventListener("click", buttonEventListener);
 
-  input.addEventListener("focus", () => {
-    input.setAttribute("placeholder", "0");
+  inputNTA.addEventListener("focus", () => {
+    inputNTA.setAttribute("placeholder", "0");
   });
-  input.addEventListener("blur", () => {
-    input.setAttribute("placeholder", "Enter a guess...");
+  inputNTA.addEventListener("blur", () => {
+    inputNTA.setAttribute("placeholder", "Enter a guess...");
+  });
+
+  inputYTA.addEventListener("focus", () => {
+    inputYTA.setAttribute("placeholder", "0");
+  });
+  inputYTA.addEventListener("blur", () => {
+    inputYTA.setAttribute("placeholder", "Enter a guess...");
+  });
+
+  inputESH.addEventListener("focus", () => {
+    inputESH.setAttribute("placeholder", "0");
+  });
+  inputESH.addEventListener("blur", () => {
+    inputESH.setAttribute("placeholder", "Enter a guess...");
+  });
+
+  inputNAH.addEventListener("focus", () => {
+    inputNAH.setAttribute("placeholder", "0");
+  });
+  inputNAH.addEventListener("blur", () => {
+    inputNAH.setAttribute("placeholder", "Enter a guess...");
   });
 }
 
 function removeEventListeners() {
   buttonInput.setAttribute("disabled", "");
   buttonInput.classList.remove("active");
-  input.setAttribute("disabled", "");
-  input.setAttribute("placeholder", "Game Over!");
-  input.removeEventListener("keydown", inputEventListener);
   buttonInput.removeEventListener("click", buttonEventListener);
+
+  inputNTA.setAttribute("disabled", "");
+  inputNTA.setAttribute("placeholder", "Game Over!");
+  inputNTA.removeEventListener("keydown", inputEventListener);
+
+  inputYTA.setAttribute("disabled", "");
+  inputYTA.setAttribute("placeholder", "Game Over!");
+  inputYTA.removeEventListener("keydown", inputEventListener);
+
+  inputESH.setAttribute("disabled", "");
+  inputESH.setAttribute("placeholder", "Game Over!");
+  inputESH.removeEventListener("keydown", inputEventListener);
+
+  inputNAH.setAttribute("disabled", "");
+  inputNAH.setAttribute("placeholder", "Game Over!");
+  inputNAH.removeEventListener("keydown", inputEventListener);
 }
 
 function checkGuess(guessNTA, guessYTA, guessESH, guessNAH) {
@@ -626,10 +668,10 @@ function displayGuess(guess, index = gameState.guesses.length) {
     "animate__flipInX",
   );
 
-  guessValueContainerNTA.innerHTML = `$${guess.guessNTA}`;
-  guessValueContainerYTA.innerHTML = `$${guess.guessYTA}`;
-  guessValueContainerESH.innerHTML = `$${guess.guessESH}`;
-  guessValueContainerNAH.innerHTML = `$${guess.guessNAH}`;
+  guessValueContainerNTA.innerHTML = `%${guess.guessNTA}`;
+  guessValueContainerYTA.innerHTML = `%${guess.guessYTA}`;
+  guessValueContainerESH.innerHTML = `%${guess.guessESH}`;
+  guessValueContainerNAH.innerHTML = `%${guess.guessNAH}`;
 
   infoContainerNTA.classList.add(guess.closenessNTA);
   infoContainerYTA.classList.add(guess.closenessYTA);
