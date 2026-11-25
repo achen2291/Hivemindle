@@ -71,27 +71,35 @@ function playGame() {
 Fetching game data
 */
 
+function getGameNumber() {
+  // TODO: Implement logic to get game number based on diff from today and starting date
+  return 400;
+}
+
 function fetchGameData(gameNumber) {
   fetch("./games_folder/games.json")
     .then((response) => response.json())
     .then((json) => {
       // Current game's post's title
-      gameTitle = json[`${gameNumber-1}`][`game-${gameNumber}`].title;
+      console.log(json[`${gameNumber - 1}`][`game-${gameNumber}`]);
+      gameTitle = json[`${gameNumber - 1}`][`game-${gameNumber}`].title;
       // Current game's post's body text
-      gameBody = json[`${gameNumber-1}`][`game-${gameNumber}`].body;
+      gameBody = json[`${gameNumber - 1}`][`game-${gameNumber}`].body;
       // Current game's post's NTA, YTA, ESH, NAH percentages
-      gameNTA = json[`${gameNumber-1}`][`game-${gameNumber}`].NTA;
-      gameYTA = json[`${gameNumber-1}`][`game-${gameNumber}`].YTA;
-      gameESH = json[`${gameNumber-1}`][`game-${gameNumber}`].ESH;
-      gameNAH = json[`${gameNumber-1}`][`game-${gameNumber}`].NAH;
+      gameNTA = json[`${gameNumber - 1}`][`game-${gameNumber}`].NTA;
+      gameYTA = json[`${gameNumber - 1}`][`game-${gameNumber}`].YTA;
+      gameESH = json[`${gameNumber - 1}`][`game-${gameNumber}`].ESH;
+      gameNAH = json[`${gameNumber - 1}`][`game-${gameNumber}`].NAH;
       // Current game's post's NTA, YTA, ESH, NAH vote counts
-      gameNTACount = json[`${gameNumber-1}`][`game-${gameNumber}`].NTA_Count;
-      gameYTACount = json[`${gameNumber-1}`][`game-${gameNumber}`].YTA_Count;
-      gameESHCount = json[`${gameNumber-1}`][`game-${gameNumber}`].ESH_Count;
-      gameNAHCount = json[`${gameNumber-1}`][`game-${gameNumber}`].NAH_Count;
+      gameNTACount = json[`${gameNumber - 1}`][`game-${gameNumber}`].NTA_Count;
+      gameYTACount = json[`${gameNumber - 1}`][`game-${gameNumber}`].YTA_Count;
+      gameESHCount = json[`${gameNumber - 1}`][`game-${gameNumber}`].ESH_Count;
+      gameNAHCount = json[`${gameNumber - 1}`][`game-${gameNumber}`].NAH_Count;
       // Current game's post's verdict sum and margin of error
-      gameVerdictSum = json[`${gameNumber-1}`][`game-${gameNumber}`].verdict_sum;
-      gameMarginOfError = json[`${gameNumber-1}`][`game-${gameNumber}`].margin_of_error;
+      gameVerdictSum =
+        json[`${gameNumber - 1}`][`game-${gameNumber}`].verdict_sum;
+      gameMarginOfError =
+        json[`${gameNumber - 1}`][`game-${gameNumber}`].margin_of_error;
 
       initializeGame();
     });
@@ -143,7 +151,7 @@ function displayGame() {
 function updateGameBoard() {
   updateGuessStat();
 
-  gameState.guesses.forEach((guess, index) => displayGuess(guess, index+1));
+  gameState.guesses.forEach((guess, index) => displayGuess(guess, index + 1));
 }
 
 function updateGuessStat() {
@@ -364,18 +372,21 @@ function copyStats() {
   });
 
   function isMobile() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone|IEMobile|Opera Mini/i.test(
+      navigator.userAgent,
+    );
   }
   if (isMobile()) {
     if (navigator.canShare) {
-      navigator.share({
-        title: "Hivemindle",
-        text: output,
-        url: "https://hivemindle.com",
-      }).catch((error) => console.log("Share failed: ", error));
+      navigator
+        .share({
+          title: "Hivemindle",
+          text: output,
+          url: "https://hivemindle.com",
+        })
+        .catch((error) => console.log("Share failed: ", error));
     }
-  }
-  else {
+  } else {
     output += `https://hivemindle.com`;
     navigator.clipboard.writeText(output);
     displayToast();
@@ -551,7 +562,7 @@ function gameWon() {
     userStats.maxStreak = userStats.currentStreak;
   }
   // gameState.hasWon = true;
-  localStorage.setItem("state", JSON.stringify(gameState)); //Is this necessary? 
+  localStorage.setItem("state", JSON.stringify(gameState)); //Is this necessary?
   localStorage.setItem("stats", JSON.stringify(userStats));
   removeEventListeners();
   convertToShareButton();
@@ -564,7 +575,7 @@ function gameLost() {
   convertToShareButton();
 }
 
-function displayGuess(guess, index=gameState.guesses.length) {
+function displayGuess(guess, index = gameState.guesses.length) {
   // Create containers for each type of guess
   const guessContainerNTA = document.getElementById(index + "NTA");
   const guessContainerYTA = document.getElementById(index + "YTA");
@@ -581,21 +592,45 @@ function displayGuess(guess, index=gameState.guesses.length) {
   const infoContainerESH = document.createElement("div");
   const infoContainerNAH = document.createElement("div");
   // Add classes to containers to animate and add guess to html
-  guessValueContainerNTA.classList.add("guess-value-container", "animate__flipInX");
-  guessValueContainerYTA.classList.add("guess-value-container", "animate__flipInX");
-  guessValueContainerESH.classList.add("guess-value-container", "animate__flipInX");
-  guessValueContainerNAH.classList.add("guess-value-container", "animate__flipInX");
+  guessValueContainerNTA.classList.add(
+    "guess-value-container",
+    "animate__flipInX",
+  );
+  guessValueContainerYTA.classList.add(
+    "guess-value-container",
+    "animate__flipInX",
+  );
+  guessValueContainerESH.classList.add(
+    "guess-value-container",
+    "animate__flipInX",
+  );
+  guessValueContainerNAH.classList.add(
+    "guess-value-container",
+    "animate__flipInX",
+  );
 
-  infoContainerNTA.classList.add("guess-direction-container", "animate__flipInX");
-  infoContainerYTA.classList.add("guess-direction-container", "animate__flipInX");
-  infoContainerESH.classList.add("guess-direction-container", "animate__flipInX");
-  infoContainerNAH.classList.add("guess-direction-container", "animate__flipInX");
+  infoContainerNTA.classList.add(
+    "guess-direction-container",
+    "animate__flipInX",
+  );
+  infoContainerYTA.classList.add(
+    "guess-direction-container",
+    "animate__flipInX",
+  );
+  infoContainerESH.classList.add(
+    "guess-direction-container",
+    "animate__flipInX",
+  );
+  infoContainerNAH.classList.add(
+    "guess-direction-container",
+    "animate__flipInX",
+  );
 
   guessValueContainerNTA.innerHTML = `$${guess.guessNTA}`;
   guessValueContainerYTA.innerHTML = `$${guess.guessYTA}`;
   guessValueContainerESH.innerHTML = `$${guess.guessESH}`;
   guessValueContainerNAH.innerHTML = `$${guess.guessNAH}`;
-  
+
   infoContainerNTA.classList.add(guess.closenessNTA);
   infoContainerYTA.classList.add(guess.closenessYTA);
   infoContainerESH.classList.add(guess.closenessESH);
@@ -626,7 +661,6 @@ function displayGuess(guess, index=gameState.guesses.length) {
     guessContainerYTA.appendChild(infoContainerYTA);
     guessContainerESH.appendChild(infoContainerESH);
     guessContainerNAH.appendChild(infoContainerNAH);
-
   }, 500);
 
   updateGuessStat();
@@ -638,12 +672,10 @@ function shakeBox() {
   if (infoCard.classList.contains("animate__headShake")) {
     infoCard.classList.remove("animate__headShake");
   }
-  shakeTimeout = setTimeout(() => infoCard.classList.add("animate__headShake"), 100);
-}
-
-function getGameNumber() {
-  // TODO: Implement logic to get game number based on diff from today and starting date
-  return 1;
+  shakeTimeout = setTimeout(
+    () => infoCard.classList.add("animate__headShake"),
+    100,
+  );
 }
 
 function switchState(event) {
@@ -664,8 +696,7 @@ function switchState(event) {
   if (overlayButtonClicked === "info-overlay") {
     document.getElementById("stats-overlay").style.display = "none";
     renderInfo();
-  }
-  else {
+  } else {
     document.getElementById("info-overlay").style.display = "none";
     renderStats();
   }
@@ -691,9 +722,8 @@ function switchState(event) {
       const winPercentageElement = document.getElementById("win-percentage");
       if (userStats.numGames === 0) {
         winPercentageElement.innerHTML = `0`;
-      }
-      else {
-        winPercentageElement.innerHTML = `${Math.round((userStats.numWins) / (userStats.numGames)) * 100}`;
+      } else {
+        winPercentageElement.innerHTML = `${Math.round(userStats.numWins / userStats.numGames) * 100}`;
       }
 
       const currentStreakElement = document.getElementById("current-streak");
@@ -708,13 +738,11 @@ function switchState(event) {
         const graphBarElement = document.getElementById(`guess-${index + 1}`);
         if (userStats.numWins === 0) {
           graphBarElement.style.width = `5%`;
-        }
-        else {
+        } else {
           graphBarElement.style.width = `${Math.floor((numGuesses / userStats.numWins) * 95.0) + 5}%`;
         }
         graphBarElement.innerHTML = `${numGuesses}`;
       });
     }
   }
-
 }
